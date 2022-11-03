@@ -33,18 +33,13 @@ Node* Tree::search(string val)
 
 void Tree::deleteAllSubTree(Node* t)
 {
-	if (t->isLeaf) {
-		delete t;
+	if (t == nullptr) {
 		return;
 	}
-	// for each childern of the subtree t delete all of their subtree
-	for (auto node = t->responses.begin(); node  != t->responses.end(); node++)
+	for (auto node = t->responses.begin(); node != t->responses.end(); node++)
 	{
 		deleteAllSubTree(*node);
-		// after deleting all of the subtree of a certain child remove the ptr to the child from the list
-		t->responses.erase(node);
 	}
-	// after deleting and removing all of the subtrees in the children remove the root itself
 	delete t;
 }
 
@@ -53,7 +48,7 @@ void Tree::addRoot(string newval)
 	// creating a new node and giving it a string value
 	Node* node = new Node(newval);
 	// deleting the old tree
-	this->deleteAllSubTree(root);
+	deleteAllSubTree(root);
 	// creating a new root
 	root = node;
 }
@@ -76,31 +71,9 @@ bool Tree::addSon(string fatherdiscussion, string newresponse)
 
 bool Tree::printSubTree(string val)
 {
-	std::queue<Node*> queue;
 	Node* p = search(val);
 	if (p == nullptr) return false;
-
-	queue.push(p);
-	int level = 0;
-
-	while (!queue.empty()) {
-		Node* currentNode = queue.front();
-		queue.pop();
-
-		// printing the response
-		// printing the \t to see the diferent levels
-		for (size_t i = 0; i < level; i++)
-		{
-			std::cout << '\t';
-		}
-		std::cout << currentNode->content << std::endl;
-		level++;
-
-		for (auto node = currentNode->responses.begin(); node != currentNode->responses.end(); node++)
-		{
-			queue.push(*node);
-		}
-	}
+	print(p);
 	return true;
 }
 
@@ -114,6 +87,30 @@ bool Tree::deleteSubTree(string val)
 	// if p is not null so we have the node so we can delete all the sub tree of the node
 	deleteAllSubTree(p);
 	
+}
+
+void Tree::print(Node* p, int level)
+{
+	for (size_t i = 0; i < level; i++)
+	{
+		cout << "   ";
+	}
+	cout << p->content << endl;
+	int nextLevel = level + 1;
+	for (auto node = p->responses.begin(); node != p->responses.end(); node++)
+	{
+		print(*node, nextLevel);
+	}
+
+} 
+
+
+bool Tree::searchAndPrintPath(Node* p, string val)
+{
+	if (val == p->content) {
+
+	}
+	return false;
 }
 
 
@@ -183,4 +180,46 @@ Tree* treeList::searchTreeByRoot(string rt)
 	}
 
 	return tree;
+}
+
+void treeList::searchAndPrint(string val)
+{
+	for (auto itr = trees.begin(); itr != trees.end(); itr++)
+	{
+		// it will search in the current tree, and if it doesn't find it, it will search in the next tree etc...
+		(*itr)->searchAndPrintPath(val);
+	}
+
+}
+
+void treeList::printTree(string rt)
+{
+	// calling the methods that will find the right tree by searching the root node in each tree in the list
+	Tree* tree = searchTreeByRoot(rt);
+
+	// cheking if tree -> nullptr, we now the tree with root->content = rt doesn't exist
+	if (tree != nullptr) {
+		tree->printAllTree();
+	}
+
+}
+
+void treeList::printAllTrees()
+{
+	for (auto itr = trees.begin(); itr != trees.end(); itr++)
+	{
+		(*itr)->printAllTree();
+		std::cout << std::endl;
+	}
+}
+
+void treeList::printSubTree(string rt, string s)
+{
+	// calling the methods that will find the right tree by searching the root node in each tree in the list
+	Tree* tree = searchTreeByRoot(rt);
+
+	// cheking if tree -> nullptr, we now the tree with root->content = rt doesn't exist
+	if (tree != nullptr) {
+		tree->printSubTree(s);
+	}
 }

@@ -11,6 +11,7 @@ class Node
 {
 	void setValue(string v);
 public:
+
 	list<Node*> responses;
 
 	string content;
@@ -18,6 +19,10 @@ public:
 	bool isLeaf;
 
 	Node(string v) { isLeaf = true;  content = v; }
+
+	~Node() {
+		responses.clear();
+	}
 
 	friend class Tree;
 };
@@ -28,23 +33,21 @@ class Tree
 {
 	Node* root;
 
-	Node* search(string val);
-
-
 	bool searchAndPrintPath(Node* p, string val);
 
-	void print(Node* p, int level = 0);
+	void print(Node* p, int level=0);
+
+	Node* search(string val);
 
 public:
 
-	Tree() { root = NULL; }
+	Tree() { root = nullptr; }
 
 	~Tree() {
 		deleteAllSubTree(root);
 		root = 0;
 	}
 
-	// cuation!! there may be a problam with deleteing the node t itself
 	void deleteAllSubTree(Node* t);
 
 	void addRoot(string newval);
@@ -58,8 +61,6 @@ public:
 	}
 
 	void printAllTree() { print(root); }
-
-	void printSubTreeroot(string val, int _= 0) { printSubTree(root->content); }
 
 	bool printSubTree(string val);
 
@@ -80,7 +81,10 @@ private:
 public:
 	treeList() {}
 
-	~treeList();
+	~treeList() {
+		// by calling clear on a list of tree it will call the dtor on each tree in the list
+		trees.clear();
+	}
 
 	void addNewTree(string s);
 
