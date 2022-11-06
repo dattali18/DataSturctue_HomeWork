@@ -4,6 +4,8 @@
 #include <string>
 using namespace std;
 
+// Daniel Attali 328780879 data sturcture2 ex1
+
 class Node;
 
 //Node: each Node in the discussion tree
@@ -18,10 +20,13 @@ public:
 
 	bool isLeaf;
 
-	Node(string v) { isLeaf = true;  content = v; }
+	Node* parent;
+
+	Node(string v) { isLeaf = true;  content = v; parent = nullptr; }
 
 	~Node() {
 		responses.clear();
+		parent = nullptr;
 	}
 
 	friend class Tree;
@@ -32,8 +37,6 @@ public:
 class Tree
 {
 	Node* root;
-
-	bool searchAndPrintPath(Node* p, string val);
 
 	void print(Node* p, int level=0);
 
@@ -54,11 +57,7 @@ public:
 
 	bool addSon(string fatherdiscussion, string newresponse);
 
-	bool searchAndPrintPath(string val)
-	{
-		bool flag = searchAndPrintPath(root, val);
-		return flag;
-	}
+	bool searchAndPrintPath(string val);
 
 	void printAllTree() { print(root); }
 

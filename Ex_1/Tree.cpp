@@ -1,5 +1,9 @@
 #include "Tree.h"
 #include <queue>
+#include <algorithm>
+
+// Daniel Attali 328780879 data sturcture2 ex1
+
 
 // methods of the class Node
 
@@ -61,10 +65,14 @@ bool Tree::addSon(string fatherdiscussion, string newresponse)
 	if (p == nullptr) {
 		return false;
 	}
+	Node* newNode = new Node(newresponse);
 	// if the dicussion exist and we have the parent add to the response a new response
-	p->responses.push_back(new Node(newresponse));
+	p->responses.push_back(newNode);
+	// pointing the ptr parent to the parent p
+	newNode->parent = p;
 	// changing the value of is leaf since it has a son now
 	p->isLeaf = false;
+	
 	// return true indicate the operation was a success
 	return true;
 }
@@ -84,9 +92,11 @@ bool Tree::deleteSubTree(string val)
 	if (p == nullptr) {
 		return false;
 	}
+	// poiting to ptr
+	Node* parent = p->parent;
+	parent->responses.remove(p);
 	// if p is not null so we have the node so we can delete all the sub tree of the node
 	deleteAllSubTree(p);
-	
 }
 
 void Tree::print(Node* p, int level)
@@ -105,12 +115,26 @@ void Tree::print(Node* p, int level)
 } 
 
 
-bool Tree::searchAndPrintPath(Node* p, string val)
+bool Tree::searchAndPrintPath(string val)
 {
-	if (val == p->content) {
+	Node* node = search(val);
+	if(node == nullptr)
+		return false;
 
+	Node* p = node->parent;
+	std::list<string> path;
+	while (p->parent != nullptr) {
+		path.push_back(p->content);
+		p = p->parent;
 	}
-	return false;
+
+	if(!path.empty())
+		cout << path.back();
+	for (auto str = (path.begin())++; str != path.end(); str++)
+	{
+		cout << "=>" << *str;
+	}
+	return true;
 }
 
 
@@ -206,8 +230,11 @@ void treeList::printTree(string rt)
 
 void treeList::printAllTrees()
 {
-	for (auto itr = trees.begin(); itr != trees.end(); itr++)
+	int num = 1;
+	for (auto itr = trees.rbegin(); itr != trees.rend(); itr++)
 	{
+		cout << "Tree #" << num << endl;
+		num++;
 		(*itr)->printAllTree();
 		std::cout << std::endl;
 	}
@@ -221,5 +248,6 @@ void treeList::printSubTree(string rt, string s)
 	// cheking if tree -> nullptr, we now the tree with root->content = rt doesn't exist
 	if (tree != nullptr) {
 		tree->printSubTree(s);
+		tree->searchAndPrintPath(s);
 	}
 }
