@@ -1,6 +1,7 @@
 #include "Tree.h"
 #include <queue>
 #include <algorithm>
+#include <iterator>
 
 // Daniel Attali 328780879 data sturcture2 ex1
 
@@ -122,18 +123,25 @@ bool Tree::searchAndPrintPath(string val)
 		return false;
 
 	Node* p = node->parent;
-	std::list<string> path;
-	while (p->parent != nullptr) {
-		path.push_back(p->content);
+	cout << node->content;
+	//std::list<string> path;
+	while (p != nullptr) {
+		//path.push_back(p->content);
+		cout << "=>" << p->content;
 		p = p->parent;
 	}
 
-	if(!path.empty())
-		cout << path.back();
-	for (auto str = (path.begin())++; str != path.end(); str++)
-	{
-		cout << "=>" << *str;
-	}
+	//std::list<string>::iterator itr = path.begin();
+	//if (!path.empty())
+	//{
+	//	cout << *itr;
+	//	next(itr, 1);
+	//	
+	//}
+	//for (;itr != path.end(); ++itr)
+	//{
+	//	cout << "=> " << *itr;
+	//}
 	return true;
 }
 
@@ -183,8 +191,16 @@ bool treeList::delResponse(string rt, string res)
 	if (tree == nullptr)
 		return false;
 
-	bool flag = tree->deleteSubTree(res);
-	return flag;
+	if (rt == res) {
+		trees.remove(tree);
+		//delete tree;
+		return true;
+	}
+	else {
+		bool flag = tree->deleteSubTree(res);
+		return flag;
+	}
+	
 }
 
 
@@ -208,10 +224,12 @@ Tree* treeList::searchTreeByRoot(string rt)
 
 void treeList::searchAndPrint(string val)
 {
-	for (auto itr = trees.begin(); itr != trees.end(); itr++)
+	for (auto itr = trees.rbegin(); itr != trees.rend(); itr++)
 	{
 		// it will search in the current tree, and if it doesn't find it, it will search in the next tree etc...
+		(*itr)->printSubTree(val);
 		(*itr)->searchAndPrintPath(val);
+		cout << endl;
 	}
 
 }
@@ -249,5 +267,6 @@ void treeList::printSubTree(string rt, string s)
 	if (tree != nullptr) {
 		tree->printSubTree(s);
 		tree->searchAndPrintPath(s);
+		cout << endl;
 	}
 }
