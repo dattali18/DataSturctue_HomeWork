@@ -19,11 +19,19 @@ class HSubject :public HashTable<list<string>, string>
 
 public:
 	HSubject(int n) :HashTable <list<string>, string>(n) {}
+
 	int h1(string s) { return key(s) % size; }
+
 	int h2(string s) { return (key(s) % (size - 1) + 1) % size; }
+
 	void printS(string ky);
+
 	void printN(string ky, int N);
+
 	void print();
+
 	void startNewTable();
+
 	void addSubjectAndTitle(string s, string t);
+
 };

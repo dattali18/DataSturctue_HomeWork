@@ -21,9 +21,15 @@
     <ClInclude Include="HSubject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HashInt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HashTable.cpp">
+    <ClCompile Include="HashInt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HSubject.cpp">
