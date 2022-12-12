@@ -117,7 +117,7 @@ inline HashTable<T, K>::HashTable(int m)
 template<typename T, typename K>
 inline HashTable<T, K>::~HashTable()
 {
-	delete[]arr;
+	delete []arr;
 }
 
 template<typename T, typename K>
