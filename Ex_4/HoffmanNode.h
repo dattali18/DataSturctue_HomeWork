@@ -3,6 +3,7 @@
 #pragma once
 
 class compareNod;
+class HuffmanTree;
 class HuffmanNode
 {
 private:
@@ -15,6 +16,8 @@ private:
 	HuffmanNode* m_right;
 
 	friend class compareNod;
+
+	friend class HuffmanTree;
 	
 public:
 	HuffmanNode(std::string str, int frequency, HuffmanNode* left = nullptr, HuffmanNode* right = nullptr) : m_str(str), m_frequency(frequency), m_left(left), m_right(right) {}
@@ -77,13 +80,20 @@ public:
 
 	std::string* buildCodedTabe();
 
+	std::string getLetterInTree(HuffmanNode* root, std::string letters);
+
+	std::string getCoddedTree(HuffmanNode* root, std::string code);
+
 	void buildTree(int* frequencyTable);
 
 	void buildTree(int n, std::string letters, std::string tree);
 
 	void calcHuffmanCodeTable(HuffmanNode* root, std::string str);
 
-	void encode(char letter, std::string* codedTable);
+	std::string encode(char letter, std::string* codedTable);
+
+	std::string decode(std::string code);
+
 
 };
 
